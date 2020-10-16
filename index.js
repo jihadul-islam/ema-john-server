@@ -10,6 +10,9 @@ app.use(bodyParser.json());
 app.use(cors());
 const port = 5000
 
+app.get('/', (req, res) => {
+  res.send('hello world');
+})
 const client = new MongoClient(uri, { useNewUrlParser: true ,  useUnifiedTopology: true });
 client.connect(err => {
   const productsCollection = client.db("emaJhonStore").collection("products");
@@ -24,13 +27,12 @@ client.connect(err => {
   })
 
   app.get('/products', (req, res) => {
-    productsCollection.find({}).limit(20)
-  .toArray((err,documents) => {
-    res.send(documents)
-  })
-    
-  })
+    productsCollection.find({})
+    .toArray( (err, documents) => {
+        res.send(documents);
+    })
+})
 });
 
 
-app.listen(port);
+app.listen(process.env.PORT ||  port);
